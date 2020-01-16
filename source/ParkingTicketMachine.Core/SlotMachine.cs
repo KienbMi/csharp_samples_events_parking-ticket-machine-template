@@ -4,5 +4,6 @@ namespace ParkingTicketMachine.Core
 {
     public class SlotMachine
     {
+        //erster test
     }
 }
