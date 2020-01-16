@@ -1,0 +1,29 @@
+﻿<controls:MetroWindow x:Class="ParkingTicketMachine.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        WindowStyle="ThreeDBorderWindow" BorderThickness="2" 
+        BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}"
+        xmlns:local="clr-namespace:ParkingTicketMachine.Wpf"
+        mc:Ignorable="d"
+        Title="Parkticketverwaltung" Margin="3" Width="600" Height="500" Loaded="MetroWindow_Loaded" ResizeMode="NoResize">
+    <Grid Margin="3">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <DockPanel Margin="3">
+            <Label Content="Adresse des Parkscheiautomaten:" Margin="3" VerticalAlignment="Center"/>
+            <TextBox x:Name="TextBoxAddress" Margin="3" VerticalAlignment="Center" Width="250"/>
+            <Button x:Name="ButtonNew" Content="New SlotMachine" Margin="5" VerticalAlignment="Center" Width="120" Height="30" DockPanel.Dock="Right" Click="ButtonNew_Click"/>
+        </DockPanel>
+        <ScrollViewer Grid.Row="1" >
+            <TextBlock x:Name="TextBlockLog" TextWrapping="Wrap" />
+        </ScrollViewer>
+
+
+    </Grid>
+</controls:MetroWindow>
+

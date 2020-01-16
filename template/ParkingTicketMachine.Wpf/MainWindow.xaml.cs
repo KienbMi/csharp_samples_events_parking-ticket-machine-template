@@ -10,6 +10,8 @@ namespace ParkingTicketMachine.Wpf
     /// </summary>
     public partial class MainWindow
     {
+   
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -18,8 +20,8 @@ namespace ParkingTicketMachine.Wpf
         private void MetroWindow_Loaded(object sender, EventArgs e)
         {
             FastClock.Instance.Factor = 360;
-            FastClock.Instance.IsRunning = true;
             FastClock.Instance.OneMinuteIsOver += OnOneMinuteIsOver;
+            this.Title = "PARKSCHEINZENTRALE";
 
             SlotMachineWindow slotMachineWindow1 = new SlotMachineWindow("LIMESSTRASSE", OnTicketReady) {Owner = this };
             slotMachineWindow1.Show();
@@ -36,16 +38,7 @@ namespace ParkingTicketMachine.Wpf
 
         private void OnTicketReady(object source, Ticket ticket)
         {
-            string line = $"{ticket.Stationname}: {ticket.ValidUntil} {ticket.AmountPaid} Cent";
-            AddLineToTextBox(line);
-        }
 
-        private void AddLineToTextBox(string line)
-        {
-            StringBuilder text = new StringBuilder(TextBlockLog.Text);
-            text.Append(FastClock.Instance.Time.ToShortTimeString() + "\t");
-            text.Append(line + "\n");
-            TextBlockLog.Text = text.ToString();
         }
 
         private void OnOneMinuteIsOver(object source, DateTime actualTime)

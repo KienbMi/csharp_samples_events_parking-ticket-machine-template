@@ -9,27 +9,47 @@ namespace ParkingTicketMachine.Wpf
     /// </summary>
     public partial class SlotMachineWindow
     {
-        private string _name { get; set; }
+        private SlotMachine _slotMachine;
 
-
-        public SlotMachineWindow(string name, EventHandler<Ticket> ticketReady)
+        public SlotMachineWindow(string stationname, EventHandler<Ticket> ticketReady)
         {
             InitializeComponent();
-            _name = name;
-            this.Title = _name;
+            Title = stationname;
+
+            _slotMachine = new SlotMachine(ticketReady, stationname);
         }
 
         private void ButtonInsertCoin_Click(object sender, RoutedEventArgs e)
         {
+            int[] coinValues = { 10, 20, 50, 100, 200 };
+            if (ListBoxCoins.SelectedIndex < 0 || ListBoxCoins.SelectedIndex >= coinValues.Length)
+            {
+                MessageBox.Show("Bitte wählen Sie eine Münze aus!");
+                return;
+            }
+            _slotMachine.InsertCoin(coinValues[ListBoxCoins.SelectedIndex]);
+            
+            if (_slotMachine.ValidUntil > FastClock.Instance.Time)
+            {
+                TextBoxTimeUntil.Text = _slotMachine.ValidUntil.ToShortTimeString();
+            }
         }
 
         private void ButtonPrintTicket_Click(object sender, RoutedEventArgs e)
         {
+            DateTime validUntil = _slotMachine.PrintTicket();
+            if (validUntil > FastClock.Instance.Time)
+            {
+                MessageBox.Show($"Sie dürfen bis {validUntil} parken");
+            }
+
+            TextBoxTimeUntil.Text = string.Empty;
         }
 
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
-
+            _slotMachine.PrintTicket();
+            TextBoxTimeUntil.Text = string.Empty;
         }
 
     }
