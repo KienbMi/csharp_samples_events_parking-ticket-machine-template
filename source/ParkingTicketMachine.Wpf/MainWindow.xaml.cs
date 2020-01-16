@@ -10,18 +10,34 @@ namespace ParkingTicketMachine.Wpf
     /// </summary>
     public partial class MainWindow
     {
+   
+        
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        private void Window_Initialized(object sender, EventArgs e)
+        private void MetroWindow_Loaded(object sender, EventArgs e)
         {
+            FastClock.Instance.Factor = 360;
+
+            SlotMachineWindow slotMachineWindow1 = new SlotMachineWindow("LIMESSTRASSE", OnTicketReady) {Owner = this };
+            slotMachineWindow1.Show();
+
+            SlotMachineWindow slotMachineWindow2 = new SlotMachineWindow("LANDSTRASSE", OnTicketReady) {Owner = this };
+            slotMachineWindow2.Show();
+
+
         }
 
         private void ButtonNew_Click(object sender, RoutedEventArgs e)
         {
             
+        }
+
+        private void OnTicketReady(object source, Ticket ticket)
+        {
+
         }
 
     }
