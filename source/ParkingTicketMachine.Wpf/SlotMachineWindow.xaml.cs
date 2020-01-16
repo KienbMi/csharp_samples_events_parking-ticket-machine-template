@@ -9,10 +9,14 @@ namespace ParkingTicketMachine.Wpf
     /// </summary>
     public partial class SlotMachineWindow
     {
+        private string _name { get; set; }
+
 
         public SlotMachineWindow(string name, EventHandler<Ticket> ticketReady)
         {
             InitializeComponent();
+            _name = name;
+            this.Title = _name;
         }
 
         private void ButtonInsertCoin_Click(object sender, RoutedEventArgs e)
@@ -25,6 +29,7 @@ namespace ParkingTicketMachine.Wpf
 
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
+
         }
 
     }
