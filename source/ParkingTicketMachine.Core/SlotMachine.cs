@@ -4,9 +4,11 @@ namespace ParkingTicketMachine.Core
 {
     public class SlotMachine
     {
-        private const int MinPrice = 50;
-        private const int MinParkingTime = 30;
-        private const int MaxParkingTime = 90;
+        private readonly int MinPrice = 50;
+        private readonly int MinParkingTime = 30;
+        private readonly int MaxParkingTime = 90;
+        private readonly DateTime StartTime = DateTime.Parse("08:00");
+        private readonly DateTime EndTime = DateTime.Parse("18:00");
 
         public string Stationname { get; private set; }
         public int AmountPaid { get; private set; }
@@ -44,7 +46,27 @@ namespace ParkingTicketMachine.Core
             if (AmountPaid >= MinPrice)
             {
                 double minutes = Math.Min((double)AmountPaid / MinPrice * MinParkingTime, MaxParkingTime);
-                ValidUntil = FastClock.Instance.Time.AddMinutes(minutes);
+
+                if (FastClock.Instance.Time.TimeOfDay < StartTime.TimeOfDay)
+                {
+                    ValidUntil = FastClock.Instance.Time.Date.AddMinutes(minutes + StartTime.TimeOfDay.TotalMinutes);
+                }
+                else if (FastClock.Instance.Time.TimeOfDay > EndTime.TimeOfDay)
+                {
+                    ValidUntil = FastClock.Instance.Time.AddDays(1);
+                    ValidUntil = ValidUntil.Date.AddMinutes(minutes + StartTime.TimeOfDay.TotalMinutes);
+                }
+                else
+                {
+                    ValidUntil = FastClock.Instance.Time.AddMinutes(minutes);
+                    if (ValidUntil.TimeOfDay > EndTime.TimeOfDay)
+                    {
+                        TimeSpan timeSpan = ValidUntil.TimeOfDay - EndTime.TimeOfDay;
+                        ValidUntil = FastClock.Instance.Time.AddDays(1);
+                        ValidUntil = ValidUntil.Date.AddMinutes(timeSpan.TotalMinutes + StartTime.TimeOfDay.TotalMinutes);
+                    }
+                }
+
                 timeValid = ValidUntil.ToShortTimeString();
             }
             return timeValid;
