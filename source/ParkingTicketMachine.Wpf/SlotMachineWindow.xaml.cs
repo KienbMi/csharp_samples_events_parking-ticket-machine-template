@@ -17,6 +17,7 @@ namespace ParkingTicketMachine.Wpf
             Title = stationname;
 
             _slotMachine = new SlotMachine(ticketReady, stationname);
+            InitSlotMachine();
         }
 
         private void ButtonInsertCoin_Click(object sender, RoutedEventArgs e)
@@ -32,6 +33,7 @@ namespace ParkingTicketMachine.Wpf
             if (_slotMachine.ValidUntil > FastClock.Instance.Time)
             {
                 TextBoxTimeUntil.Text = _slotMachine.ValidUntil.ToShortTimeString();
+                ButtonPrintTicket.IsEnabled = true;
             }
         }
 
@@ -42,14 +44,19 @@ namespace ParkingTicketMachine.Wpf
             {
                 MessageBox.Show($"Sie dürfen bis {validUntil} parken");
             }
-
-            TextBoxTimeUntil.Text = string.Empty;
+            InitSlotMachine();
         }
 
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
             _slotMachine.PrintTicket();
+            InitSlotMachine();
+        }
+
+        private void InitSlotMachine()
+        {
             TextBoxTimeUntil.Text = string.Empty;
+            ButtonPrintTicket.IsEnabled = false;
         }
 
     }
